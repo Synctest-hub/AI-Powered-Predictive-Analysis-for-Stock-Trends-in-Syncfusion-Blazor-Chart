@@ -1,0 +1,2 @@
+# AI-Powered-Predictive-Analysis-for-Stock-Trends-in-Syncfusion-Blazor-Chart
+This example demonstrates how to integrate Azure OpenAI with Syncfusion Charts in a Blazor application to create AI-powered charting. It dynamically generates predicted OHLC values from historical stock data, customizes the chart rendering, and enhances the experience with real-time insights and interactive data visualization.
