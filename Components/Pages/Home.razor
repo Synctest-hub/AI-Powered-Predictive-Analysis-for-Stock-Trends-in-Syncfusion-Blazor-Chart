@@ -1,0 +1,73 @@
+﻿@page "/"
+@using Syncfusion.Blazor.Charts
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.SplitButtons
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+@inject AzureOpenAIService AIService
+
+<style>
+    .container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    }
+
+    .row {
+    display: flex;
+    justify-content: space-between; /* Pushes first div to start and second div to end */
+    align-items: center; /* Aligns items vertically */
+    flex-wrap: wrap; /* Ensures responsiveness */
+    }
+
+    .col-left {
+    flex: 1; /* Takes available space */
+    }
+
+    .col-right {
+    display: flex;
+    justify-content: flex-end; /* Aligns content to the end */
+    flex: 1; /* Takes available space */
+    }
+</style>
+
+<div class="container">
+    <div class="box">
+        <div class="row">
+            <div class="col-left">
+                <SfButtonGroup Mode="Syncfusion.Blazor.SplitButtons.SelectionMode.Multiple">
+                    <ButtonGroupButton @bind-Selected="@IsOneMonthSelected" @onclick="GetOneMonthData">1 Month</ButtonGroupButton>
+                    <ButtonGroupButton @bind-Selected="@IsThreeMonthsSelected" @onclick="GetThreeMonthsData">3 Months</ButtonGroupButton>
+                    <ButtonGroupButton @bind-Selected="@IsSixMonthsSelected" @onclick="GetSixMonthsData">6 Months</ButtonGroupButton>
+                </SfButtonGroup>
+            </div>
+            <div class="col-right">
+                <SfButton CssClass="e-info" @onclick=AIButtonClicked>AI</SfButton>
+            </div>
+        </div>
+    </div>
+    <div class="box">
+        <SfChart>
+            <ChartArea>
+                <ChartAreaBorder Width="0"></ChartAreaBorder>
+            </ChartArea>
+            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" IntervalType="Syncfusion.Blazor.Charts.IntervalType.Months" Format="MMM dd" ZoomFactor="@ZoomFactor">
+                <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+                <ChartAxisMajorTickLines Width="0" Height="0"></ChartAxisMajorTickLines>
+                <ChartAxisLineStyle Width="0.2"></ChartAxisLineStyle>
+                <ChartStriplines>
+                    <ChartStripline Start="@StripStartDate" End="@StripEndDate" Color="#E0E0E0" />
+                </ChartStriplines>
+            </ChartPrimaryXAxis>
+            <ChartPrimaryYAxis>
+                <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+                <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
+            </ChartPrimaryYAxis>
+            <ChartSeriesCollection>
+                <ChartSeries DataSource="@StockData" XName="Period" Low="Low" High="High" Close="Close" Volume="Volume" Open="Open"
+                Width="2" Type="ChartSeriesType.Candle" BearFillColor="#2ecd71" BullFillColor="#e74c3d">
+                </ChartSeries>
+            </ChartSeriesCollection>
+        </SfChart>
+    </div>
+</div>
